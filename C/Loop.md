@@ -13,6 +13,7 @@ int main(void){
         printf("Hello world\n");
         num++;
     }
+    return 0;
 }
 // 반복의 조건 num < 3
 // printf("Hello world\n");
@@ -34,6 +35,8 @@ int main(void){
         printf("Hello world\n");
         num++;
     } while(num<3);
+    
+    return 0;
 }
 // 반복 조건을 뒤에서 검사.
 ```
