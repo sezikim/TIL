@@ -29,8 +29,6 @@ int main(void)
     
     ch1 = getchar();
     ch2 = fgetc(stdin);
-    
-    putchar(ch1);
     fpuc(ch2, stdout);
     return 0;
 }
@@ -61,7 +59,7 @@ int main(void)
     - char* gets(char* s);
     - 할당 받은 메모리 공간을 넘어서는 문자열이 입력되면, 오류 발생.
 - **fgets**
-    - char* fgets(chars* s, int n, FILE* stream);
+    - char* fgets(char* s, int n, FILE* stream);
     - 파일의 끝에 도달하거나 함수호출 실패 시 NULL 포인터 반환.
     - stdin으로부터 문자열을 입력받아, n의 길이만큼 저장.
     - 문자열의 길이는 NULL까지 이므로, **n의 값이 7이면 6개의 문자 + NULL 저장.**
