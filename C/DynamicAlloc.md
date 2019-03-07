@@ -38,4 +38,5 @@
 -     int main(void){
         int* arr = (int*)malloc(sizeof(int)*3); // 길이가 3인 int형 배열 할당
         arr = (int*)realloc(arr, sizeof(int)*5); // 길이가 5인 int형 배열로 확장
-      }
+     		return 0;
+     }
