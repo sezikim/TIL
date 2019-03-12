@@ -2,6 +2,8 @@
 #include <stdlib.h>
 // int 뿐 아니라, 다양한 타입을 정렬해보자
 // size를 받아서 char형 1바이트 연산을 통해 1바이트씩 바꿔준다.
+// void* 를 사용해서 다양한 타입을 받기.
+
 void swap(void *a, void *b, size_t size) {
 	char *temp = malloc(size);
 	int i;

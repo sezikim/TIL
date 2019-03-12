@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 // sort에서 내림차순 , 오름차순의 정책을 사용자에 의해서 정해보자
-
+// 함수의 정책을 결정하는 함수포인터 사용!
 void swap(int *a, int *b) {
 	int *temp;
 	temp = a;

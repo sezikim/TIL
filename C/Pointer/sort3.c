@@ -3,6 +3,7 @@
 // GCC는 void* 에 대한 연산을 char*로 취급해준다
 // -> 1바이트 연산을 가능하게 해준다.
 // -> + / - 만 지원한다.
+// 
 void swap(char *a, char *b, size_t size) {
 	char *temp = malloc(size);
 	int i;
