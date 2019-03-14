@@ -1,4 +1,4 @@
-## man page
+# man page
 - section 1 user commands
 - section 2 system calls
 - section 3 library funtions
