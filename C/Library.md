@@ -13,8 +13,8 @@
 - 라이브러리가 변경되면, 컴파일을 다시 해야한다.
 - 배포가 쉽다.
 - ar rcv libadd.a add.o
-- gcc main.o -ladd -L
-## -ar rcv
+- gcc main.o -ladd -L.
+## ar rcv
 - ar
     - archive파일을 만드는 도구
 - r
@@ -25,15 +25,15 @@
     - library가 변화하는 과정을 보여준다.
 
 ## 동적 라이브러리
-   - Linux : .so(shared object)
-    - Windows : .dll(dynamic loading library)
-    - 실행 중에 필요한 라이브러리를 동적으로 메모리에 로드해서 사용.
-    - 실행 파일 안에 함수의 구현이 존재하지 않는다.
-    - 실행파일의 크기가 크지 않다.
-    - 추가적인 로드가 필요하다.
-    - 라이브러리가 변경되어도 다시 컴파일을 할 필요가 없다.
-    - gcc add.o -shared -fpic -o libadd.so
-    - LD_LIIBRARY_PATH =. ./a.out
+- Linux : .so(shared object)
+- Windows : .dll(dynamic loading library)
+- 실행 중에 필요한 라이브러리를 동적으로 메모리에 로드해서 사용.
+- 실행 파일 안에 함수의 구현이 존재하지 않는다.
+- 실행파일의 크기가 크지 않다.
+- 추가적인 로드가 필요하다.
+- 라이브러리가 변경되어도 다시 컴파일을 할 필요가 없다.
+-     gcc add.o -shared -fpic -o libadd.so
+      LD_LIBRARY_PATH =. ./a.out
 
 ## #include <dlfcn.h>
 - void *dlopen (const char *filename, int flag);
@@ -55,9 +55,10 @@
 - int dlclose (void *handle);
     - shared library에 대한 참조 count를 1 감소시킨다.
 
-## -shared -fpic
+## -shared
 - 동적 라이브러리를 만드는 옵션.
 - 다른 오브젝트들에 링크되어 실행 가능한 형태가 될 수 있도록 하는 옵션.
+## -fpic
 - gcc를 호출할 때, 위치 독립적인 코드를 생성하게 하는 옵션
 - 환경변수에 영향을 받지 않는다.
 
