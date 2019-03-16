@@ -66,4 +66,3 @@ int main() {
 		add_next(&head, data+i);
 		print_list(data + 10);
 	}
-}
