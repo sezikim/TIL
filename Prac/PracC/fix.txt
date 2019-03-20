@@ -1,0 +1,7 @@
+file 입출력시 오류처리
+
+10000000 같은 데이터 unsinged char 로 비트열로 표현 가능
+
+malloc 오류처리
+
+fallthrough
