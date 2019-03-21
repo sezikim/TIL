@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "list.h"
 #include "sort.h"
 char *kinds[6] = { "CellDx", "Sports Car", "SUV", "Wagon", "Minivan", "Pickup" };
