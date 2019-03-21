@@ -15,10 +15,10 @@ void insert_car(struct node *s, struct node *new) {
 void print_list(struct node *head) {
 	struct node *current = head;
 	current = current -> next;
-	printf("Name                                          Kind            WD       Price     Cost      Engine  Weight  Width\n");	
+	printf("Name                                          Kind            WD       Price     Cost  Engine      Weight  Width\n");	
 	while (current != head) {	
 		car *cur = (car*)((char*)current - (unsigned long)&(((car*)0)->link));
-		printf("%-45s %-15s %-5s %8d %8d %8d %8d %8d\n", cur->name, cur->kind, cur->wd,
+		printf("%-45s %-15s %-5s %8d %8d %8lf %8d %8d\n", cur->name, cur->kind, cur->wd,
 								cur->price, cur->dealer_cost, cur->engine, cur->weight, cur->width);
 		current = current -> next;
 	}
@@ -32,7 +32,7 @@ void save_list(struct node *head, char* filename, FILE *fwp) {
 	fputs("Name,Kind,WD,Retail Price,Dealer Cost,EngineSize,Weight,Width\n",fwp);	
 	while (current != head) {	
 		car *cur = (car*)((char*)current - (unsigned long)&(((car*)0)->link));
-		fprintf(fwp, "%s,%s,%s,%d,%d,%d,%d,%d\n", cur->name, cur->kind, cur->wd,
+		fprintf(fwp, "%s,%s,%s,%d,%d,%lf,%d,%d\n", cur->name, cur->kind, cur->wd,
 								cur->price, cur->dealer_cost, cur->engine, cur->weight, cur-> width);
 		current = current -> next;
 	}

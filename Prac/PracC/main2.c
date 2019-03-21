@@ -6,7 +6,6 @@
 
 char *kinds[6] = { "CellDx", "Sports Car", "SUV", "Wagon", "Minivan", "Pickup" };
 char *wds[3] = { "AWD", "RWD", "" };
-struct node head = { &head, &head };
 
 int main() {
 	int kind; // car 종류
@@ -43,7 +42,7 @@ int main() {
 		}
 		newCar->price = atoi(token[i++]);
 		newCar->dealer_cost = atoi(token[i++]);
-		newCar->engine = atoi(token[i++]);
+		newCar->engine = atof(token[i++]);
 		newCar->weight = atoi(token[i++]);
 		newCar->width = atoi(token[i++]);
 		
@@ -82,36 +81,19 @@ int main() {
 		printf("2. 내림차순 정렬\n");
 		scanf("%d", &asd);
 
-		if (asd==1){
-			qsort(kindArr, kindCount, sizeof(car), compare);
-			printf("Name                                          Kind            WD       Price     Cost      Engine  Weight  Width\n");	
-			for(i = 0; i < kindCount; ++i) {	
-				printf("%-45s %-15s %-5s %8d %8d %8d %8d %8d\n",
-									(kindArr+i)->name,
-									(kindArr+i)->kind,
-									(kindArr+i)->wd,
-									(kindArr+i)->price, 
-									(kindArr+i)->dealer_cost,
-									(kindArr+i)->engine,
-									(kindArr+i)->weight,
-									(kindArr+i)->width);
-			}
-		} else {
-			qsort(kindArr, kindCount, sizeof(car), compare);
-			printf("Name                                          Kind            WD       Price     Cost      Engine  Weight  Width\n");	
-			for(i = 0; i < kindCount; ++i) {
-				printf("%-45s %-15s %-5s %8d %8d %8d %8d %8d\n",
-									(kindArr+i)->name,
-									(kindArr+i)->kind,
-									(kindArr+i)->wd,
-									(kindArr+i)->price,
-									(kindArr+i)->dealer_cost,
-									(kindArr+i)->engine,
-									(kindArr+i)->weight,
-									(kindArr+i)->width);
-			}
+		qsort(kindArr, kindCount, sizeof(car), compare);
+		printf("Name                                          Kind            WD       Price     Cost  Engine      Weight  Width\n");	
+		for(i = 0; i < kindCount; ++i) {	
+			printf("%-45s %-15s %-5s %8d %8d %8lf %8d %8d\n",
+								(kindArr+i)->name,
+								(kindArr+i)->kind,
+								(kindArr+i)->wd,
+								(kindArr+i)->price, 
+								(kindArr+i)->dealer_cost,
+								(kindArr+i)->engine,
+								(kindArr+i)->weight,
+								(kindArr+i)->width);
 		}
-
 		printf("파일로 저장하시겠습니까?\n");
 		printf("1. 예\n");
 		printf("2. 아니요\n");
@@ -125,7 +107,7 @@ int main() {
 			fputs("Name,Kind,WD,Retail Price,Dealer Cost,EngineSize,Weight,Width\n",fwp);
 			
 			for(i = 0; i < kindCount; ++i) {
-			fprintf(fwp, "%s,%s,%s,%d,%d,%d,%d,%d\n",
+			fprintf(fwp, "%s,%s,%s,%d,%d,%lf,%d,%d\n",
 								   (kindArr+i)->name,
 									 (kindArr+i)->kind,
 								 	 (kindArr+i)->wd,

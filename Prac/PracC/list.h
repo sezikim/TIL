@@ -5,6 +5,7 @@ struct node {
 	struct node *prev;
 	struct node *next;
 };
+struct node head = { &head, &head };
 
 typedef struct cAR {
 	char name[50];
@@ -12,7 +13,7 @@ typedef struct cAR {
 	char wd[4];
 	int price;
 	int dealer_cost;
-	int engine;
+	double engine;
 	int weight;
 	int width;
 	struct node link;

@@ -18,10 +18,12 @@ int comparec1(const void *a, const void *b) {
 }
 
 int comparee2(const void *a, const void *b) {
-	return ((car*)a)->engine - ((car*)b)->engine;
+	if (((car*)a)->engine > ((car*)b)->engine)	return 1;
+	else return -1;
 }
 int comparee1(const void *a, const void *b) {
-	return ((car*)b)->engine - ((car*)a)->engine;
+	if (((car*)a)->engine < ((car*)b)->engine)	return 1;
+	else return -1;
 }
 
 int comparewe2(const void *a, const void *b) {
@@ -49,7 +51,6 @@ void swap(char* a, char* b, size_t size) {
 	free(temp);
 }
 
-// 배열로 할때
 int carCountA(car* cArr, int count, char *s) {
 	int i;
 	int kindC = 0;
@@ -61,40 +62,10 @@ int carCountA(car* cArr, int count, char *s) {
 	return kindC;
 }
 
-// 리스트로 할때
-int carCountL(struct node *head, char *s) {
-	int kindC = 0;
-	struct node *cur = head;
-	cur = cur->next;
-	while(cur != head) {
-		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
-		if(strcmp(curcar->kind, s) == 0)	kindC++;
-		cur = cur->next;
-	}
-	return kindC;
-}
-
-// 배열로 할때
 void mkindArrA(car* cArr, car* kindArr, int count, char *s) {
 	int i;
 	int j = 0;
 	for(i=0; i < count; ++i) {
 		if(strcmp((cArr+i)->kind, s) == 0) kindArr[j++] = cArr[i];
-	}
-}
-
-// 리스트로 할때
-void mkindArrL(struct node *head, car *kindArr, char *s) {
-	int i = 0;
-	int j = 0;
-	struct node *cur = head;
-	cur = cur->next;
-	while(cur != head) {
-		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
-		if(strcmp(curcar->kind, s) == 0) {
-			kindArr+j = curcar;
-			j++;
-		}
-		cur = cur->next;
 	}
 }

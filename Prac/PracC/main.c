@@ -57,7 +57,7 @@ int main() {
 		}
 		(cArr+idx)->price = atoi(token[i++]);
 		(cArr+idx)->dealer_cost = atoi(token[i++]);
-		(cArr+idx)->engine = atoi(token[i++]);
+		(cArr+idx)->engine = atof(token[i++]);
 		(cArr+idx)->weight = atoi(token[i++]);
 		(cArr+idx)->width = atoi(token[i++]);
 		idx++;
