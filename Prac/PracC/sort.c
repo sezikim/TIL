@@ -92,14 +92,7 @@ void mkindArrL(struct node *head, car *kindArr, char *s) {
 	while(cur != head) {
 		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
 		if(strcmp(curcar->kind, s) == 0) {
-			strcpy((kindArr+j)->name, curcar->name);
-			strcpy((kindArr+j)->kind, curcar->kind);
-			strcpy((kindArr+j)->wd, curcar->wd);
-			(kindArr+j)->price = curcar->price;
-			(kindArr+j)->dealer_cost = curcar->dealer_cost;	
-			(kindArr+j)->engine = curcar->engine;
-			(kindArr+j)->weight = curcar->weight;
-			(kindArr+j)->width = curcar->width;
+			kindArr+j = curcar;
 			j++;
 		}
 		cur = cur->next;

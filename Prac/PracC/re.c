@@ -30,7 +30,7 @@ typedef enum {
 	RWD= 1 << 0
 }car_type;
 
-const char *type[] = {
+const char *types[] = {
 	"CellDx",
 	"Sports Car",
 	"SUV",
@@ -77,29 +77,44 @@ int main() {
 		return 1;
 	}
 
-	int i=0;
+	int i = 0;
 	while (fgets(buf, sizeof(buf), fp)) {
 		if (i++ == 0) continue;
-		
+		unsigned char data = 0;
 		car *car = malloc(sizeof(car));
 
 		char *p = strtok(buf, ",");
 		for (i = 0 ; p != NULL; p = strtok(NULL, ","), i++) {
 			switch(i) {
 				case 0:
-				car->name = p;
-				printf("%s \n", car->name);
-				break;
+					car->name = p;
+					printf("%s \n", car->name);
+					break;
 				case 1: case 2 : case 3: case 4: case 5: case 6: case 7:
-				case 8: { 
-				unsigned char data = 1 << (8-i)
-				}
-
+				case 8: 
+					data |= 1 << (8-i);
+					break;
+				case 9: 
+					car->price = atoi(p);
+					break;
+				case 10:
+					car->cost = atoi(p);
+					break;
+				case 11:
+					car->engine = atoi(p);
+					break;
+				case 12:
+					car->weight = atoi(p);
+					break;
+				case 13:
+					car->width = atoi(p);
+					break;
 			}
-
+			car->type = data;
 		}
 		insert_car(&head, car);
 	}
-
+	print_car(&head);
+	
 }
 

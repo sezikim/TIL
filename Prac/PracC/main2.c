@@ -2,32 +2,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
-#include "sort.h"
+#include "sort2.h"
 
 char *kinds[6] = { "CellDx", "Sports Car", "SUV", "Wagon", "Minivan", "Pickup" };
 char *wds[3] = { "AWD", "RWD", "" };
-int (*compare[10])(const void *a, const void *b) = {comparep1, comparep2, comparec1, comparec2, comparee1,
-																	comparee2, comparewe1, comparewe2, comparewi1, comparewi2};
 struct node head = { &head, &head };
 
 int main() {
-	int count = 0;
-	int choice = 0;
-	int i;
+	int kind; // car 종류
+	int menu; // 선택 | 종료
+	int i = 0;
 	int kindCount = 0;
 	car *kindArr;
-	char str[300];
-	FILE *frp = fopen("car_data.csv", "r");
-	FILE *fwp;	
-	fgets(str, sizeof(str), frp); // 첫줄
+	char buf[300];
 
-	while(fgets(str, sizeof(str), frp)) {
-		// 새로운 car 
+	FILE *frp = fopen("car_data.csv", "r");
+	if( frp == NULL) {
+		printf("File open error....\n");
+		return 1;
+	}
+
+	while(fgets(buf, sizeof(buf), frp)) {
+		if( i++==0) continue;
 		car *newCar = malloc(sizeof(car));
 
 		// string parse
 		char *token[14];
-		token[0] = strtok(str, ",");
+		token[0] = strtok(buf, ",");
 		for( i = 1; i < 14; ++i) {
 			token[i] = strtok(NULL, ",");
 		}
@@ -54,9 +55,9 @@ int main() {
 		printf("1. 검색\n");
 		printf("2. 종료\n");
 		printf("선택 > ");
-		scanf("%d", &choice);
+		scanf("%d", &menu);
 	
-		if(choice == 1){
+		if(menu == 1){
 			printf("1. CellDx\n");
 			printf("2. Sports Car\n");
 			printf("3. SUV\n");
@@ -64,10 +65,10 @@ int main() {
 			printf("5. Minivan\n");
 			printf("6. Pickup\n");
 			printf("선택> ");
-			scanf("%d", &choice);
-			kindCount = carCountL(&head, kinds[choice-1]);
+			scanf("%d", &kind);
+			kindCount = carCountL(&head, kinds[kind-1]);
 			kindArr = malloc(sizeof(car) * kindCount);
-			mkindArrL(&head, kindArr, kinds[choice-1]);
+			mkindArrL(&head, kindArr, kinds[kind-1]);
 		} else return 0;
 	
 		printf("1. Retail Price\n");
@@ -76,24 +77,38 @@ int main() {
 		printf("4. Weight\n");
 		printf("5. Width\n");
 		printf("선택> ");
-		scanf("%d", &choice);
+		scanf("%d", &pivot);
 		printf("1. 오름차순 정렬\n");
 		printf("2. 내림차순 정렬\n");
-		scanf("%d", &i);
-		int i;
-		if (i==1){
-			qsort(kindArr, kindCount, sizeof(car), compare[choice*2-2]);
+		scanf("%d", &asd);
+
+		if (asd==1){
+			qsort(kindArr, kindCount, sizeof(car), compare);
 			printf("Name                                          Kind            WD       Price     Cost      Engine  Weight  Width\n");	
 			for(i = 0; i < kindCount; ++i) {	
-				printf("%-45s %-15s %-5s %8d %8d %8d %8d %8d\n", (kindArr+i)->name, (kindArr+i)->kind, (kindArr+i)->wd,
-							(kindArr+i)->price, (kindArr+i)->dealer_cost, (kindArr+i)->engine, (kindArr+i)->weight, (kindArr+i)->width);
+				printf("%-45s %-15s %-5s %8d %8d %8d %8d %8d\n",
+									(kindArr+i)->name,
+									(kindArr+i)->kind,
+									(kindArr+i)->wd,
+									(kindArr+i)->price, 
+									(kindArr+i)->dealer_cost,
+									(kindArr+i)->engine,
+									(kindArr+i)->weight,
+									(kindArr+i)->width);
 			}
 		} else {
-			qsort(kindArr, kindCount, sizeof(car), compare[choice*2-1]);
+			qsort(kindArr, kindCount, sizeof(car), compare);
 			printf("Name                                          Kind            WD       Price     Cost      Engine  Weight  Width\n");	
 			for(i = 0; i < kindCount; ++i) {
-				printf("%-45s %-15s %-5s %8d %8d %8d %8d %8d\n", (kindArr+i)->name, (kindArr+i)->kind, (kindArr+i)->wd,
-							(kindArr+i)->price, (kindArr+i)->dealer_cost, (kindArr+i)->engine, (kindArr+i)->weight, (kindArr+i)->width);
+				printf("%-45s %-15s %-5s %8d %8d %8d %8d %8d\n",
+									(kindArr+i)->name,
+									(kindArr+i)->kind,
+									(kindArr+i)->wd,
+									(kindArr+i)->price,
+									(kindArr+i)->dealer_cost,
+									(kindArr+i)->engine,
+									(kindArr+i)->weight,
+									(kindArr+i)->width);
 			}
 		}
 
@@ -101,17 +116,27 @@ int main() {
 		printf("1. 예\n");
 		printf("2. 아니요\n");
 		printf("선택> ");
-		scanf("%d", &choice);
-		if (choice==1) {
+		scanf("%d", &menu);
+		if (menu==1) {
 			printf("파일이름> ");
-			scanf("%s", str);
-			fwp = fopen(str, "w");
+			scanf("%s", buf);
+
+			FILE *fwp = fopen(buf, "w");
 			fputs("Name,Kind,WD,Retail Price,Dealer Cost,EngineSize,Weight,Width\n",fwp);
+			
 			for(i = 0; i < kindCount; ++i) {
-			fprintf(fwp, "%s,%s,%s,%d,%d,%d,%d,%d\n", (kindArr+i)->name, (kindArr+i)->kind, (kindArr+i)->wd,
-								(kindArr+i)->price, (kindArr+i)->dealer_cost, (kindArr+i)->engine, (kindArr+i)->weight, (kindArr+i)-> width);
+			fprintf(fwp, "%s,%s,%s,%d,%d,%d,%d,%d\n",
+								   (kindArr+i)->name,
+									 (kindArr+i)->kind,
+								 	 (kindArr+i)->wd,
+								 	 (kindArr+i)->price,
+								   (kindArr+i)->dealer_cost,
+								   (kindArr+i)->engine,
+								   (kindArr+i)->weight,
+								   (kindArr+i)-> width);
 			}
-			printf("%s에 저장되었습니다.\n", str);
+			printf("%s에 저장되었습니다.\n", buf);
+			fclose(fwp);
 		} else {
 			free(kindArr);
 		}
@@ -120,6 +145,5 @@ int main() {
 	}
 	fclose(frp);
 	free(kindArr);
-	fclose(fwp);
 	return 0;
 }

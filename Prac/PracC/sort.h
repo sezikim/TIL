@@ -15,6 +15,4 @@ int comparewi2(const void *a, const void *b);
 void swap(char* a, char* b, size_t size); 
 int carCountA(car* cArr, int count, char *s);
 void mkindArrA(car* cArr, car* kindArr, int count, char *s); 
-int carCountL(struct node *head, char *s);
-void mkindArrL(struct node *head, car* kindArr, char *s); 
 #endif
