@@ -25,7 +25,6 @@ int pivot;
 int asd;
 struct node head = { &head, &head };
 
-
 void insert_data(struct node *prev, struct node *next, struct node *new) {
 	new->next = next;
 	new->prev = prev;
@@ -35,19 +34,6 @@ void insert_data(struct node *prev, struct node *next, struct node *new) {
 
 void insert_car(struct node *s, struct node *new) {
 	insert_data(s, s->next, new);
-}
-
-void print_list(struct node *head) {
-	struct node *current = head;
-	current = current -> next;
-	printf("Name                                          Kind            WD       Price     Cost  Engine      Weight  Width\n");	
-	while (current != head) {	
-		car *cur = (car*)((char*)current - (unsigned long)&(((car*)0)->link));
-		printf("%-45s %-15s %-5s %8d %8d %8lf %8d %8d\n", cur->name, cur->kind, cur->wd,
-								cur->price, cur->dealer_cost, cur->engine, cur->weight, cur->width);
-		current = current -> next;
-	}
-		
 }
 
 int compare(const void *a, const void *b) {
@@ -81,22 +67,12 @@ int compare(const void *a, const void *b) {
 	}
 }
 
-void swap(char* a, char* b, size_t size) {
-	char *temp = malloc(sizeof(size));
-	int i;
-
-	for (i = 0; i < size; ++i) {
-		temp[i] = a[i];
-		a[i] = b[i];
-		b[i] = temp[i];
-	}
-	free(temp);
-}
-
 int carCountL(struct node *head, char *s) {
 	int kindC = 0;
+	
 	struct node *cur = head;
 	cur = cur->next;
+	
 	while(cur != head) {
 		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
 		if(strcmp(curcar->kind, s) == 0)	kindC++;
@@ -107,8 +83,10 @@ int carCountL(struct node *head, char *s) {
 
 void mkindArrL(struct node *head, car *kindArr, char *s) {
 	int i = 0;
+	
 	struct node *cur = head;
 	cur = cur->next;
+	
 	while(cur != head) {
 		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
 		if(strcmp(curcar->kind, s) == 0) {

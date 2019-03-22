@@ -1,71 +1,35 @@
 #include <stdio.h>
 #include "list.h"
-#include <string.h>
-#include <stdlib.h>
 
-int comparep2(const void *a, const void *b) {
-	return ((car*)a)->price - ((car*)b)->price;
-}
-int comparep1(const void *a, const void *b) {
-	return ((car*)b)->price - ((car*)a)->price;
-}
-
-int comparec2(const void *a, const void *b) {
-	return ((car*)a)->dealer_cost - ((car*)b)->dealer_cost;
-}
-int comparec1(const void *a, const void *b) {
-	return ((car*)b)->dealer_cost - ((car*)a)->dealer_cost;
-}
-
-int comparee2(const void *a, const void *b) {
-	if (((car*)a)->engine > ((car*)b)->engine)	return 1;
-	else return -1;
-}
-int comparee1(const void *a, const void *b) {
-	if (((car*)a)->engine < ((car*)b)->engine)	return 1;
-	else return -1;
-}
-
-int comparewe2(const void *a, const void *b) {
-	return ((car*)a)->weight - ((car*)b)->weight;
-}
-int comparewe1(const void *a, const void *b) {
-	return ((car*)b)->weight - ((car*)a)->weight;
-}
-int comparewi2(const void *a, const void *b) {
-	return ((car*)a)->width - ((car*)b)->width;
-}
-int comparewi1(const void *a, const void *b) {
-	return ((car*)b)->width - ((car*)a)->width;
-}
-
-void swap(char* a, char* b, size_t size) {
-	char *temp = malloc(sizeof(size));
-	int i;
-
-	for (i = 0; i < size; ++i) {
-		temp[i] = a[i];
-		a[i] = b[i];
-		b[i] = temp[i];
+int pivot;
+int asd;
+int compare(const void *a, const void *b) {
+	if (asd == 1)
+	switch (pivot) {
+		case 1:
+			return ((car*)a)->retail_price - ((car*)b)->retail_price;
+		case 2:
+			return ((car*)a)->dealer_cost - ((car*)b)->dealer_cost;
+		case 3:
+			if (((car*)a)->engine_size > ((car*)b)->engine_size) return 1;
+			else return -1;
+		case 4:
+			return ((car*)a)->weight - ((car*)b)->weight;
+		case 5:
+			return ((car*)a)->width - ((car*)b)->width;
 	}
-	free(temp);
-}
-
-int carCountA(car* cArr, int count, char *s) {
-	int i;
-	int kindC = 0;
-	for(i = 0; i < count; ++i) {
-		if(strcmp((cArr+i)->kind, s) == 0 ) {
-			kindC++;
-		}
-	}
-	return kindC;
-}
-
-void mkindArrA(car* cArr, car* kindArr, int count, char *s) {
-	int i;
-	int j = 0;
-	for(i=0; i < count; ++i) {
-		if(strcmp((cArr+i)->kind, s) == 0) kindArr[j++] = cArr[i];
+	else
+		switch (pivot) {
+		case 1:
+			return ((car*)b)->retail_price - ((car*)a)->retail_price;
+		case 2:
+			return ((car*)b)->dealer_cost - ((car*)a)->dealer_cost;
+		case 3:
+			if (((car*)b)->engine_size > ((car*)a)->engine_size) return 1;
+			else return -1;
+		case 4:
+			return ((car*)b)->weight - ((car*)a)->weight;
+		case 5:
+			return ((car*)b)->width - ((car*)a)->width;
 	}
 }

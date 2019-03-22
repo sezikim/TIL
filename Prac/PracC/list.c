@@ -12,37 +12,68 @@ void insert_car(struct node *s, struct node *new) {
 	insert_data(s, s->next, new);
 }
 
-void print_list(struct node *head) {
-	struct node *current = head;
-	current = current -> next;
-	printf("Name                                          Kind            WD       Price     Cost  Engine      Weight  Width\n");	
-	while (current != head) {	
-		car *cur = (car*)((char*)current - (unsigned long)&(((car*)0)->link));
-		printf("%-45s %-15s %-5s %8d %8d %8lf %8d %8d\n", cur->name, cur->kind, cur->wd,
-								cur->price, cur->dealer_cost, cur->engine, cur->weight, cur->width);
-		current = current -> next;
+void print_car(car *kindarr, int kindcount) {
+	int i;
+	for (i = 0; i < kindcount; ++i) {
+		printf("%-45s ", kindarr[i].name);
+		if (HAS_TYPE(kindarr+i, 7-CELL_DX)) fprintf(stdout,"%-5s","CellDx ");
+		if (HAS_TYPE(kindarr+i, 7-SPORTS_CAR)) fprintf(stdout,"%-5s","Sports Car ");
+		if (HAS_TYPE(kindarr+i, 7-SUV)) fprintf(stdout,"%-5s","SUV ");
+		if (HAS_TYPE(kindarr+i, 7-WAGON)) fprintf(stdout,"%-5s","Wagon ");
+		if (HAS_TYPE(kindarr+i, 7-MINIVAN)) fprintf(stdout,"%-5s","Minivan ");
+		if (HAS_TYPE(kindarr+i, 7-PICKUP)) fprintf(stdout,"%-5s","Pickup ");
+		if (HAS_TYPE(kindarr+i, 7-AWD)) fprintf(stdout,"%-5s","AWD");
+		else if (HAS_TYPE(kindarr+i, 7-RWD)) fprintf(stdout,"%-5s","RWD");
+		else fprintf(stdout, "%-5s","   ");
+		printf("%8d ", kindarr[i].retail_price);
+		printf("%8d ", kindarr[i].dealer_cost);
+		printf("%8lf ", kindarr[i].engine_size);
+		printf("%8d ", kindarr[i].weight);
+		printf("%8d\n", kindarr[i].width);
+		}
+}
+
+void save_car(car *kindarr, int kindcount, FILE *fp) {
+	int i;
+	for (i = 0; i < kindcount; ++i) {
+		fprintf(fp, "%s,", kindarr[i].name);
+		if (HAS_TYPE(kindarr+i, 7-CELL_DX)) fprintf(fp, "CellDx,");
+		if (HAS_TYPE(kindarr+i, 7-SPORTS_CAR)) fprintf(fp, "Sports Car,");
+		if (HAS_TYPE(kindarr+i, 7-SUV)) fprintf(fp, "SUV,");
+		if (HAS_TYPE(kindarr+i, 7-WAGON)) fprintf(fp, "Wagon,");
+		if (HAS_TYPE(kindarr+i, 7-MINIVAN)) fprintf(fp, "Minivan,");
+		if (HAS_TYPE(kindarr+i, 7-PICKUP)) fprintf(fp, "Pickup,");
+		if (HAS_TYPE(kindarr+i, 7-AWD)) fprintf(fp, "AWD,");
+		if (HAS_TYPE(kindarr+i, 7-RWD)) fprintf(fp, "RWD,");
+		fprintf(fp, "%d,", kindarr[i].retail_price);
+		fprintf(fp, "%d,", kindarr[i].dealer_cost);
+		fprintf(fp, "%lf,", kindarr[i].engine_size);
+		fprintf(fp, "%d,", kindarr[i].weight);
+		fprintf(fp, "%d\n", kindarr[i].width);
+		}
+}
+
+int cKind(struct node *head, int kind) {
+	int count = 0;
+	struct node *cur = head->next;
+
+	while (cur != head) {
+		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
+		if(HAS_TYPE(curcar, kind)) count++;
+		cur = cur->next;	
 	}
-		
+	return count;
 }
-void save_list(struct node *head, char* filename, FILE *fwp) {
-	
-	fwp = fopen(filename, "w");
-	struct node *current = head;
-	current = current -> next;
-	fputs("Name,Kind,WD,Retail Price,Dealer Cost,EngineSize,Weight,Width\n",fwp);	
-	while (current != head) {	
-		car *cur = (car*)((char*)current - (unsigned long)&(((car*)0)->link));
-		fprintf(fwp, "%s,%s,%s,%d,%d,%lf,%d,%d\n", cur->name, cur->kind, cur->wd,
-								cur->price, cur->dealer_cost, cur->engine, cur->weight, cur-> width);
-		current = current -> next;
+
+void mArr(struct node *head, car *kindarr, int kind) {
+	struct node *cur = head->next;
+	int i = 0;
+	while (cur != head) {
+		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
+		if (HAS_TYPE(curcar, kind)) {
+			*(kindarr+i) = *curcar;
+			i++;
+		}
+		cur = cur->next;
 	}
-	printf("%s에 저장되었습니다.\n", filename);
 }
-/*
-struct node* delete_car(struct node *s, struct node *prev, struct node *next) {
-	
-}
-*/
-
-
-
