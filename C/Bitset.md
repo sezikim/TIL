@@ -83,9 +83,9 @@ int main() {
 - 위 코드를 DEFINE으로 비트연산을 정의해서 사용한다.
 ```C
 #include <stdio.h>
-#DEFINE ADD_ITEM(items, item) items |= item
-#DEFINE HAS_ITEM(items, item) items & item
-#DEFINE REMOVE_ITEM(items, item) items &= ~ 
+#define ADD_ITEM(items, item) items |= item
+#define HAS_ITEM(items, item) items & item
+#define REMOVE_ITEM(items, item) items &= ~ 
 enum {
     SWORD = 1 << 0,
     DAGGER = 1 << 1,
@@ -107,14 +107,14 @@ int main() {
     
     ADD_ITEM(user.item, SWORD);
     
-    if (HAS_ITEM(user.item, SWORD) {
+    if (HAS_ITEM(user.item, SWORD)) {
         printf("검이 있다.\n");
     }
     else printf("검이 없다.\n");
     
-    REMOVE_ITEM(user.item, SWORD)
+    REMOVE_ITEM(user.item, SWORD);
     
-    if (HAS_ITEM(user.item, SWORD) {
+    if (HAS_ITEM(user.item, SWORD)) {
         printf("검이 있다.\n");
     }
     else printf("검이 없다.\n");
@@ -124,9 +124,9 @@ int main() {
 - 이를 비트셋으로 표현해보자.
 ```C
 #include <stdio.h>
-#DEFINE ADD_ITEM(user, item) (user)->items[(item)/32] |= 1 << (item % 32)
-#DEFINE HAS_ITEM(user, item) (user)->items[(item)/32] & 1 << (item % 32)
-#DEFINE REMOVE_ITEM(user, item) (user)->items[(item)/32] &= ~(1 << (item % 32))
+#define ADD_ITEM(user, item) (user)->items[(item)/32] |= 1 << (item % 32)
+#define HAS_ITEM(user, item) (user)->items[(item)/32] & 1 << (item % 32)
+#define REMOVE_ITEM(user, item) (user)->items[(item)/32] &= ~(1 << (item % 32))
 
 enum {
     SWORD,
@@ -140,25 +140,25 @@ enum {
     MAX_ITEM_COUNT = 1024
 };
 
-typedef unsigned [MAX_ITEM_COUNT /sizeof(unsigned int) * 8];
+typedef unsigned int[MAX_ITEM_COUNT /sizeof(unsigned int) * 8];
 
 struct user {
     bitset items;
 };
 
 int main() {
-    struct user *user;
-    
+    struct user user;
+    struct user *p = &user;    
     ADD_ITEM(user, SWORD);
     
-    if (HAS_ITEM(user, SWORD) {
+    if (HAS_ITEM(p, SWORD)) {
         printf("검이 있다.\n");
     }
     else printf("검이 없다.\n");
     
-    REMOVE_ITEM(user, SWORD)
+    REMOVE_ITEM(p, SWORD);
     
-    if (HAS_ITEM(user, SWORD) {
+    if (HAS_ITEM(p, SWORD)) {
         printf("검이 있다.\n");
     }
     else printf("검이 없다.\n");
