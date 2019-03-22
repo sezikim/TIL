@@ -1,9 +1,12 @@
 #include <stdio.h>
 
-void foo() {
-	char *s = "hello";
-}
 
 int main() {
-	foo();
+	int a = 4;
+
+	int *p = &a;
+
+	void *ppa = p;
+
+	printf("%d\n", *(int*)ppa);
 }
