@@ -88,7 +88,6 @@ int main() {
 		scanf("%d", &asd);
 
 		qsort(kindarr, kindcount, sizeof(car), compare);
-		printf("Name                                          Kind       WD      Price    Cost  Engine      Weight   Width\n");	
 		print_car(kindarr, kindcount);
 		
 		printf("파일로 저장하시겠습니까?\n");
@@ -101,18 +100,16 @@ int main() {
 			scanf("%s", buf);
 
 			FILE *fwp = fopen(buf, "w");
-			fputs("Name,Kind,WD,Retail Price,Dealer Cost,EngineSize,Weight,Width\n",fwp);
 			save_car(kindarr, kindcount, fwp);	
 			printf("%s에 저장되었습니다.\n", buf);
 			fclose(fwp);
 		} else {
 			free(kindarr);
 		}
-		head.next = &head;
-		head.prev = &head;
 	}
 	fclose(frp);
-
+	head.next = &head;
+	head.prev = &head;
 	free(kindarr);
 	return 0;	
 }

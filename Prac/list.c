@@ -14,6 +14,7 @@ void insert_car(struct node *s, struct node *new) {
 
 void print_car(car *kindarr, int kindcount) {
 	int i;
+		printf("Name                                          Kind       WD      Price    Cost  Engine      Weight   Width\n");	
 	for (i = 0; i < kindcount; ++i) {
 		printf("%-45s ", kindarr[i].name);
 		if (HAS_TYPE(kindarr+i, 7-CELL_DX)) fprintf(stdout,"%-5s","CellDx ");
@@ -35,6 +36,7 @@ void print_car(car *kindarr, int kindcount) {
 
 void save_car(car *kindarr, int kindcount, FILE *fp) {
 	int i;
+	fputs("Name,Kind,WD,Retail Price,Dealer Cost,EngineSize,Weight,Width\n",fp);
 	for (i = 0; i < kindcount; ++i) {
 		fprintf(fp, "%s,", kindarr[i].name);
 		if (HAS_TYPE(kindarr+i, 7-CELL_DX)) fprintf(fp, "CellDx,");

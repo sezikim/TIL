@@ -212,9 +212,9 @@ int main() {
 		} else {
 			free(kindArr);
 		}
-		head.next = &head;
-		head.prev = &head;
 	}
+	head.next = &head;
+	head.prev = &head;
 	fclose(frp);
 	free(kindArr);
 	return 0;

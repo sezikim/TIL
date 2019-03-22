@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define ADD_TYPE(car, type) (car)->kind[(type)/32] |= 1 << ((type) %32)
+#define HAS_TYPE(car, type) (car)->kind[(type)/32] & 1 << ((type) % 32)
 
 struct node{
 	struct node *prev;
@@ -8,17 +10,6 @@ struct node{
 };
 
 struct node head = { &head, &head };
-
-typedef struct {
-	char *name;
-	unsigned char type;
-	int retail_price;
-	int dealer_cost;
-	double engine_size;
-	int weight;
-	int width;
-	struct node link;
-}car;
 
 enum {
 	CELL_DX,
@@ -28,8 +19,22 @@ enum {
 	MINIVAN,
 	PICKUP,
 	AWD,
-	RWD
+	RWD,
+	MAX_TYPE = 8,
 };
+
+typedef unsigned int bitset[MAX_TYPE / (sizeof(unsigned int) * 8) + 1];
+
+typedef struct {
+	char *name;
+	bitset kind;
+	int retail_price;
+	int dealer_cost;
+	double engine_size;
+	int weight;
+	int width;
+	struct node link;
+}car;
 
 void insert_data(struct node *prev, struct node *next, struct node *new) {
 	new->next = next;
@@ -45,16 +50,16 @@ void insert_car(struct node *s, struct node *new) {
 void print_car(car *kindarr, int kindcount) {
 	int i;
 	for (i = 0; i < kindcount; ++i) {
-		fprintf(stdout, "%-45s ", kindarr[i].name);
-		if (kindarr[i].type & 1 << (7-CELL_DX)) fprintf(stdout, "%-5s", "CellDx ");
-		if (kindarr[i].type & 1 << (7-SPORTS_CAR)) fprintf(stdout, "%-5s", "Spots Car ");
-		if (kindarr[i].type & 1 << (7-SUV)) fprintf(stdout, "%-5s", "SUV ");
-		if (kindarr[i].type & 1 << (7-WAGON)) fprintf(stdout, "%-5s", "Wagon ");
-		if (kindarr[i].type & 1 << (7-MINIVAN)) fprintf(stdout, "%-5s", "Minivan ");
-		if (kindarr[i].type & 1 << (7-PICKUP)) fprintf(stdout, "%-5s", "Pickup ");
-		if (kindarr[i].type & 1 << (7-AWD)) fprintf(stdout, "%-5s", "AWD ");
-		else if (kindarr[i].type & 1 << (7-RWD)) fprintf(stdout, "%-5s", "RWD ");
-		else fprintf(stdout, "%-5s", "   ");
+		printf("%-45s ", kindarr[i].name);
+		if (HAS_TYPE(kindarr+i, 7-CELL_DX)) fprintf(stdout,"%-5s","CellDx ");
+		if (HAS_TYPE(kindarr+i, 7-SPORTS_CAR)) fprintf(stdout,"%-5s","Sports Car ");
+		if (HAS_TYPE(kindarr+i, 7-SUV)) fprintf(stdout,"%-5s","SUV ");
+		if (HAS_TYPE(kindarr+i, 7-WAGON)) fprintf(stdout,"%-5s","Wagon ");
+		if (HAS_TYPE(kindarr+i, 7-MINIVAN)) fprintf(stdout,"%-5s","Minivan ");
+		if (HAS_TYPE(kindarr+i, 7-PICKUP)) fprintf(stdout,"%-5s","Pickup ");
+		if (HAS_TYPE(kindarr+i, 7-AWD)) fprintf(stdout,"%-5s","AWD");
+		else if (HAS_TYPE(kindarr+i, 7-RWD)) fprintf(stdout,"%-5s","RWD");
+		else fprintf(stdout, "%-5s","   ");
 		printf("%8d ", kindarr[i].retail_price);
 		printf("%8d ", kindarr[i].dealer_cost);
 		printf("%8lf ", kindarr[i].engine_size);
@@ -67,14 +72,14 @@ void save_car(car *kindarr, int kindcount, FILE *fp) {
 	int i;
 	for (i = 0; i < kindcount; ++i) {
 		fprintf(fp, "%s,", kindarr[i].name);
-		if (kindarr[i].type & 1 << (7-CELL_DX)) fprintf(fp, "CellDx,");
-		if (kindarr[i].type & 1 << (7-SPORTS_CAR)) fprintf(fp, "Spots Car,");
-		if (kindarr[i].type & 1 << (7-SUV)) fprintf(fp, "SUV,");
-		if (kindarr[i].type & 1 << (7-WAGON)) fprintf(fp, "Wagon,");
-		if (kindarr[i].type & 1 << (7-MINIVAN)) fprintf(fp, "Minivan,");
-		if (kindarr[i].type & 1 << (7-PICKUP)) fprintf(fp, "Pickup,");
-		if (kindarr[i].type & 1 << (7-AWD)) fprintf(fp, "AWD,");
-		if (kindarr[i].type & 1 << (7-RWD)) fprintf(fp, "RWD,");
+		if (HAS_TYPE(kindarr+i, 7-CELL_DX)) fprintf(fp, "CellDx,");
+		if (HAS_TYPE(kindarr+i, 7-SPORTS_CAR)) fprintf(fp, "Sports Car,");
+		if (HAS_TYPE(kindarr+i, 7-SUV)) fprintf(fp, "SUV,");
+		if (HAS_TYPE(kindarr+i, 7-WAGON)) fprintf(fp, "Wagon,");
+		if (HAS_TYPE(kindarr+i, 7-MINIVAN)) fprintf(fp, "Minivan,");
+		if (HAS_TYPE(kindarr+i, 7-PICKUP)) fprintf(fp, "Pickup,");
+		if (HAS_TYPE(kindarr+i, 7-AWD)) fprintf(fp, "AWD,");
+		if (HAS_TYPE(kindarr+i, 7-RWD)) fprintf(fp, "RWD,");
 		fprintf(fp, "%d,", kindarr[i].retail_price);
 		fprintf(fp, "%d,", kindarr[i].dealer_cost);
 		fprintf(fp, "%lf,", kindarr[i].engine_size);
@@ -83,24 +88,24 @@ void save_car(car *kindarr, int kindcount, FILE *fp) {
 		}
 }
 
-int cKind(struct node *head, unsigned char type) {
+int cKind(struct node *head, int kind) {
 	int count = 0;
 	struct node *cur = head->next;
 
 	while (cur != head) {
 		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
-		if(curcar->type & type) count++;
+		if(HAS_TYPE(curcar, kind)) count++;
 		cur = cur->next;	
 	}
 	return count;
 }
 
-void mArr(struct node *head, car *kindarr, unsigned char type) {
-	int i = 0;
+void mArr(struct node *head, car *kindarr, int kind) {
 	struct node *cur = head->next;
+	int i = 0;
 	while (cur != head) {
 		car *curcar = (car*)((char*)cur - (unsigned long)&(((car*)0)->link));
-		if (curcar->type & type) {
+		if (HAS_TYPE(curcar, kind)) {
 			*(kindarr+i) = *curcar;
 			i++;
 		}
@@ -164,7 +169,7 @@ int main() {
 				break;
 			case 1: case 2: case 3: case 4: case 5: case 6: case 7:
 			case 8:
-				if (atoi(p)==1)	new->type |= 1 << (8 - i);
+				if (atoi(p)==1)	ADD_TYPE(new, 8-i);
 				break;
 			case 9:
 				new->retail_price = atoi(p);
@@ -203,9 +208,9 @@ int main() {
 			printf("6. Pickup\n");
 			printf("선택> ");
 			scanf("%d", &type);
-			kindcount = cKind(&head, 1 << (8-type));
+			kindcount = cKind(&head, 8-type);
 			kindarr = malloc(sizeof(car) * kindcount);
-			mArr(&head, kindarr, 1 << (8-type));
+			mArr(&head, kindarr, 8-type);
 		} else return 0;
 	
 		printf("1. Retail Price\n");
@@ -220,7 +225,7 @@ int main() {
 		scanf("%d", &asd);
 
 		qsort(kindarr, kindcount, sizeof(car), compare);
-		printf("Name                                          Kind      WD      Price    Cost  Engine      Weight   Width\n");	
+		printf("Name                                          Kind       WD      Price    Cost  Engine      Weight   Width\n");	
 		print_car(kindarr, kindcount);
 		
 		printf("파일로 저장하시겠습니까?\n");
@@ -240,10 +245,10 @@ int main() {
 		} else {
 			free(kindarr);
 		}
-		head.next = &head;
-		head.prev = &head;
 	}
 	fclose(frp);
+	head.next = &head;
+	head.prev = &head;
 	free(kindarr);
 	return 0;	
 }
