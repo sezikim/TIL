@@ -32,26 +32,26 @@
 - 힙영역의 배열 객체를 참조한다.
 - 선언하는 방식이 두가지 이다.
 ## **`type`** **`[]`** **`var`**
-          int[] intArray;
-          double[] doubleArray;
-          String[] stringArray;
+        int[] intArray;
+        double[] doubleArray;
+        String[] stringArray;
 ## **`type`** **`var`** **`[]`**
-          int intArray[];
-          double doubleArray[];
-          String stringArray[];
+        int intArray[];
+        double doubleArray[];
+        String stringArray[];
 - 배열 변수를 이미 선언한 후에 중괄호를 사용한 배열 생성은 허용되지 않는다.
 - new 연산자로 배열을 생성한다.
-		  타입[] 변수 = new 타입[길이];
+-       타입[] 변수 = new 타입[길이];
 - new 연산자로 배열을 생성할 경우, 변수가 선언된 후에도 가능하다.
-		  타입[] 변수 = null;
-      변수 = new 타입[길이];
+-       타입[] 변수 = null;
+        변수 = new 타입[길이];
     - new 연산자로 배열을 생성할 경우, 자동적으로 기본값으로 초기화된다.
 
 ## 다차원 배열
 - 자바는 1차원 배열이 서로 연결된 구조로 다차원 배열을 구현한다. -> 게단식 구조를 가질 수 있다.
-          int[][] scores = new int [2][];
-          score[0] = new int[2];
-          score[1] = new int[3];
+-     int[][] scores = new int [2][];
+      score[0] = new int[2];
+      score[1] = new int[3];
 
 ## 향상된 for문
 - 자바 5 부터, 배열 및 컬렉션 객체를 좀 더 쉽게 처리할 목적으로 향상된 for문을 제공.
