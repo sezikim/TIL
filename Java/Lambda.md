@@ -174,10 +174,10 @@ public class RunnableExample {
 - 자바 8부터는 빈번하게 사용되는 함수적 인터페이스를 표준 API 패키지로 제공한다.
 - 메소드 또는 생성자의 매개 타입으로 람다식을 대입할 수 있도록 하기 위해서 쓰인다.
 
-|종류|추상 메소드 특징||
-|---|---|---|
-|Consumer|-매가값은 있고, 리턴값은 없음|매개값 --> **`consumer`**|
-|Supplier|-매개값은 없고, 리턴값은 있음|**`Supplier`** --> 리턴값|
-|Function|-매가값도 있고, 리턴값도 있음 (주로 매개값을 리턴값으로 매핑)|매개값 --> **`Function`** --> 리턴값|
-|Operator|-매가값도 있고, 리턴값도 있음 (주로 매가값을 연산하고 결과를 리턴)|매개값 --> **`Operator`** --> 리턴값|
-|Predicate|-매가값은 있고, 리턴 타입은 boolean (매개값을 조사해서 true/false를 리턴)|매개값 --> **`Predicate`** --> boolean|
+|종류|추상 메소드 특징||추상 메소드 종류|
+|---|---|---|---|
+|Consumer|-매가값은 있고, 리턴값은 없음|매개값 --> **`consumer`**|accept()|
+|Supplier|-매개값은 없고, 리턴값은 있음|**`Supplier`** --> 리턴값|getX()|
+|Function|-매가값도 있고, 리턴값도 있음 (주로 매개값을 리턴값으로 매핑)|매개값 --> **`Function`** --> 리턴값|applyX()|
+|Operator|-매가값도 있고, 리턴값도 있음 (주로 매가값을 연산하고 결과를 리턴)|매개값 --> **`Operator`** --> 리턴값|applyX()|
+|Predicate|-매가값은 있고, 리턴 타입은 boolean (매개값을 조사해서 true/false를 리턴)|매개값 --> **`Predicate`** --> boolean|testX()|
