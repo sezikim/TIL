@@ -181,3 +181,10 @@ public class RunnableExample {
 |Function|-매가값도 있고, 리턴값도 있음 (주로 매개값을 리턴값으로 매핑)|매개값 --> **`Function`** --> 리턴값|applyX()|
 |Operator|-매가값도 있고, 리턴값도 있음 (주로 매가값을 연산하고 결과를 리턴)|매개값 --> **`Operator`** --> 리턴값|applyX()|
 |Predicate|-매가값은 있고, 리턴 타입은 boolean (매개값을 조사해서 true/false를 리턴)|매개값 --> **`Predicate`** --> boolean|testX()|
+
+## 메소드 참조
+- 메소드를 참조해서 매개 변수의 정보, 리턴 타입을 알아내, 람다식의 불필요한 매개 변수를 제거
+- 람다식과 마찬가지로 인터페이스의 익명 구현 객체로 생성된다.
+-     IntBinaryOperator operator = Math :: max;
+-     (left, right) -> Math.max(left, right);
+-     두 표현은 같은 표현이다.
