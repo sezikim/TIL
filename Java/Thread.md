@@ -78,4 +78,90 @@ synchronized(공유객체) {
 |BLOCKED|일시 정지|사용하고자 하는 객체의 락이 풀릴 때까지 기다리는 상태|
 |TERMINATED|종료|실행을 마친 상태|
 
+## 스레드 상태 제어
+- 멀티 스레드 프로그램을 만들기 위해서는 정교한 스레드 상태 제어가 필요하다.
+- 스레드의 상태 변화를 가져오는 메소드들을 파악하고 있어야한다.
+![스레드 상태제어](https://t1.daumcdn.net/cfile/tistory/2135CD42566BC7D825)
+
+## sleep()
+- 실행 중인 스레드를 일정 시간 멈추게 할때 사용.
+
+## yiled()
+- yield() 메소드를 호출한 스레드는 실행 대기 상태로 돌아가고 동일한 우선순위 또는 높은 우선순위를
+갖는 다른 스레드가 실행 기회를 가질 수 있도록 해준다.
+
+## join()
+- join() 메소드를 호출한 스레드의 run() 메소드가 종료할 때까지 일시 정지 상태.
+
+## wait(), notify(), notifyAll()
+- notify() 메소드는 일시 정지 상태에 있는 다른 스레드를 실행 대기 상태로 만든다.
+- wait() 메소드는 일시 정지 상태로 만든다.
+- 이 메소드들은 Thread 클래스가 아닌 Object 클래스에 선언된 메소드이므로 모든 공유 객체에서 호출 가능.
+
+## stop 플래그, interrupt()
+- 실행 중인 스레드를 즉시 종료할 때 사용된다.
+- stop 플래그
+```java
+public clss XXXThread extends Thread {
+    private boolean stop;
+    
+    public void run() {
+        while( !stop ) {
+            스레드가 반복 실행하는 코드;
+        }
+        //스레드가 사용한 자원 정리
+    }
+}
+```
+- interrupt() 메소드
+    - 스레드가 일시 정지 상태에 있을 때, InterruptedException 예외를 발생시켜 run() 메소드를
+    종료시킨다.
+```java
+public class InterruptExample {
+    public static void main(String[] args) {
+        Thread thread = new PrintThread2();
+        thread.start();
+
+        try {
+            Thread.sleep(1000);             
+        } catch (InterruptedException e) {}
+        thread.interrupt();     //스레드를 종료시키기 위해 InterruptedException을 발생시킨다.
+    }
+}
+```
+```java
+public class PrintThread2 extends Thread {
+    @Override
+    public void run() {
+        try {
+            while(true) {
+                System.out.println("실행 중");
+                Thread.sleep(1);    //InterruptedException 발생
+            }
+        } catch (InterruptedException e) {}
+        System.out.println("자원 정리");
+        System.out.println("실행 종료");
+    }
+}
+```
+- 일시 정지를 만들지 않고도 interrupt() 호출 여부를 알 수 있는 방법이 있다.
+    - interrupted() -> 정적 메소드로 현재 스레드가 interrupted 되었는지 확인
+    - isInterrupted() -> 인스턴스 메소드로 현재 스레드가 interrupted 되었는지 확인
+-     boolean status = Thread.interrupted();
+      boolean status = objThread.isInterrupted();
+```java
+public class PrintThread2 extends Thread {
+    @Override
+    public void run() {
+        try {
+            while(true) {
+                System.out.println("실행 중");
+                if(Thread.interrupted()) break;
+            }
+        } catch (InterruptedException e) {}
+        System.out.println("자원 정리");
+        System.out.println("실행 종료");
+    }
+}
+```
 
