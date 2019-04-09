@@ -140,10 +140,16 @@ public class Student {
 ```
 
 ## 사용자 정의 컨테이너에 수집하기
-    Collect(Supplier<R>, XXXConsumer<R>, BiConsumer<R, R>)
+    collect(Supplier<R>, XXXConsumer<R>, BiConsumer<R, R>)
 - 첫 번째 Supplier는 요소들이 수집될 컨테이너 객체R을 생성.
 - 두 번째 XXXConsumer는 컨테이너 객체R에 요소T를 수집하는 역할 ( 수집할 때마다 XXXConsumer 실행 )
 - 세 번째 BiConsumer는 컨테이너 객체R을 결합하는 역할 ( 병렬 처리 스트림에서만 호출 )
+```java
+//남학생이 저장되는 컨테이너
+MaleStudent maleStudent = totalList.stream()
+        .filter(s->s.getSex == Student.Sex.MALE)
+        .collect(MaleStudent :: new, MaleStudent :: accumulate, MaleStudent :: combine);
+```
 
 ## 요소를 그룹핑해서 수집
     groupingByXXX(Function<T, K> classifier)
@@ -152,10 +158,25 @@ public class Student {
     - T를 K로 매핑하고 K키에 저장된 D객체에 T를 누적한 Map 생성
     groupingByXXX(Function<T, K> classifier, Supplier<XXXMap<K, D>> mapFactory, Collector<T, A, D> collector)
     - T를 K로 매핑하고 Supplier가 제공하는 Map에서 K키에 저장된 D객체에 T를 누적
+    ```java
+    Map<Student.City, List<String>> mapByCity = totalList.stream()
+        .collect(
+            Collectors.groupingBy(
+                Student::getCity,
+                Collectors.mapping(Student::getName, Collectors.toList())
+        );
+    ```
 
 ## 그룹핑 후 매핑 및 집계
 - Collectors.groupingBy() 메소드는 그룹핑 후, 매핑이나 집계를 할 수 있도록 
 두 번째 매개값으로 Collector를 가질 수 있다.
+```java
+Map<Student.Sex, Double> mapBySex = totalList.stream()
+    .collect(
+        Student::getSex,
+        Collectors.averageDouble(Student::getScore)
+    );
+```
 
 ## 스트림과 병렬처리
 > 병렬 처리란 멀티 코어 CPU 환경에서 하나의 작업을 분할해서 각각의 코어가 병렬적으로
@@ -173,4 +194,9 @@ public class Student {
         - 작업 병렬성
             - 서로 다른 작업을 병렬 처리하는 것
             - 대표적으로 웹 서버의 각각 브라우저에서 요청한 내용을 개별 스레드에서 병렬로 처리
+```java
+MaleStudent maleStudent = totalList.parallelStream()
+    .filter(s->s.getSex == Student.Sex.MALE)
+    .collect(MaleStudent::new, MaleStudent::accumulate, MaleStudent::combine);
+```
 
