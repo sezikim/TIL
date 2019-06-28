@@ -210,11 +210,94 @@ people.asSequence()
     - 다른 시퀀스를 반환한다.
 - 최종 연산
     - 결과를 반환한다.
+- 시퀀스의 경우 모든 연산은 각 원소에 대해 순차적으로 적용된다.
 
+## 함수형 인터페이스 활용
+- 자바 API에서 코틀린 람다를 사용해도 아무 문제가 없다.
+```kotlin
+button.setOnClickListener(new onClickListener() {
+    @Override
+    public void onClick(View v) {
+        ...
+    }
+})
+```
+이 코드는 다음과 같다
+```kotlin
+button.setOnClickListener { view -> ...
+```
+- 이런 코드가 작동하는 이유는 추상 메소드가 단 하나만 있기 때문이다.
+    - 이를 SAM(Single Abstract Method) 이라고 한다.
+- 자바 메소드에 코틀린 람다를 인자로 전달할 수 있다.
+    - 객체를 명시적으로 선언하는 경우, 메소드 호출할 때마다 새로운 객체가 생성
+    - 함수의 변수에 접근하지 않는 람다를 사용하면, 무명 객체를 반복 사용한다.
+    ```kotlin
+    postponeComputation(1000) { println(42) }
+    ```
+    이와 동일한 코드는 다음과 같다.
+    ```kotlin
+    val runnable = Runnable { println(42) }
+    fun handleComputation() {
+        postponeComputation(1000, runnable)
+    }
+    ```
+    - 람다가 주변 영역의 변수를 포획하면, 매 호출시, 새 인스턴스를 생성해준다.
+    
+## SAM 생성자
+- SAM 생성자는 람다를 함수형 인터페이스의 인스턴스로 변환 할 수 있게 컴파일러가 자동으로 생성한 함수
+- 함수형 인터페이스의 인스턴스를 반환하는 메소드가 있다면, 반환하고픈 람다를 SAM 생성자로 감싸야 한다.
+```kotlin
+fun createAllDoneRunnable(): Runnable {
+    return Runnable { println("All Done!") }
+}
+```
+- SAM 생성자의 이름은 사용하려는 함수형 인터페이스의 이름과 같다.
+```kotlin
+val listener = OnClickListener { view ->
+    val text = when (view.id) {
+        R.id.button1 -> "First button"
+        R.id.button2 -> "Second button"
+        else -> "Unknown button"
+    }
+    toast(text)
+}
+button1.setOnClickListener(listener)
+button2.setOnClickListener(listener)
+```
+- 람다에서는 this가 존재하지 않는다.
+    - 무명 객체 안에서는 this가 무명 객체 인스턴스 자신을 가리킨다.
+    - 리스너를 해제하는 API 함수에게 this를 넘길 수 있다.
 
+# 수신 객체 지정 람다
+> 수신 객체를 명시하지 않고 람다의 본문 안에서 다른 객체의 메소드를 호출할 수 있게 하는 것.
 
+## with
+- 어떤 객체의 이름을 반복하지 않고 객체에 대해 다양한 연산을 수행할 수 있게 해준다.
+- with 함수는 첫 번째 인자로 받은 객체를 두 번째 인자로 받은 람다의 수신객체로 만든다.
+```kotlin
+fun alphbet(): String {
+    val eresult = StringBuilder()
+    for (letter in 'A'..'Z') {
+        result.append(letter)
+    }
+    result.appen("\nNow I know the alphabet!")
+    return result.toString()
+}
+```
+위 예제에서 result를 반복 사용했다.
+다음 예제는 with을 사용해 다시 작성한 결과이다.
+```kotlin
+fun alphabet(): String {
+    val stringBuilder = StringBuilder()
+    return with(stringBuilder) {    // 메소드를 호출하려는 수신 객체 지정
+        for (letter in 'A'..'Z') {
+            this.append(letter)
+        }
+        append("\nNow I know the alphabet!")
+        this.toString()
+    }
+}
+```
 
-
-
-
+## apply
 
