@@ -300,4 +300,14 @@ fun alphabet(): String {
 ```
 
 ## apply
-
+- apply 함수는 거의 with와 같다.
+- 차이점
+    - 항상 자신에게 전달된 객체를 반환한다.
+```kotlin
+fun alphabet() = StringBuilder().apply {
+    for (letter in 'A'..'Z') {
+        append(letter)
+    }
+    append("\nNow I know the alphabet!")
+}.toString()
+```
