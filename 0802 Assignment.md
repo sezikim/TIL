@@ -1,4 +1,4 @@
-###StringBuilder vs StringBuffer
+### StringBuilder vs StringBuffer
 
 > 왜 String을 납두고 굳이 ..?
 
