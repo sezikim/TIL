@@ -17,20 +17,20 @@
 - 객체생성 예
 
   ```java
-  package com.programmers;
-  
   import java.lang.*;
   
-  class MyObject extends Object implements Runnable {
+  class Sezi extends Object implements Runnable {
       //필드
-      private int a = 0;
+      private String name;
+    	private int age;
+    
   	  //메소드
-    	public void run() {
-        a += 1;
+    	public void code() {
+      		System.out.println("매일 같이 코딩하자");
       }
   }
   
-  MyObject obj = new MyObject();
+  Sezi sezi = new Sezi();
   ```
 
   
