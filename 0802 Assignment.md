@@ -15,9 +15,17 @@ String 연산시, **각각의 문자열에 대해서 Constant Pool의 새로운 
 - **StringBuffer**
   - 동기화 지원
   - **멀티스레드 환경에서 안전**하다.
+  - API 코드를 확인하면, 다음과 같이 문자열을 변경하는 작업에 있어서, **synchronized** 키워드가 존재한다.
+  
+  ![스크린샷 2021-08-05 오전 9.57.48](/Users/hyunjunkim/Library/Application Support/typora-user-images/스크린샷 2021-08-05 오전 9.57.48.png)
+  
 - **StringBuilder**
+  
   - 동기화 미지원 (**멀티스레드 환경에서 안전하지 않다.**)
   - 단일스레드 환경에서 성능이 뛰어나다.
+  - 문자열을 변경하는 작업에 있어서, 동기화 작업을 위한 코드가 없다.
+  
+  ![스크린샷 2021-08-05 오전 9.58.55](/Users/hyunjunkim/Library/Application Support/typora-user-images/스크린샷 2021-08-05 오전 9.58.55.png)
 
 
 
